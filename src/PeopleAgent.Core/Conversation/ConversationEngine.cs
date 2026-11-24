@@ -25,6 +25,8 @@ public sealed class ConversationEngine(
         "This request was blocked by the service's content policy. Please rephrase your question and try again.";
     private const string GenerationFailure =
         "Something went wrong and the answer may be incomplete. No action was taken. Please try again.";
+    private const string MobileFormatHint =
+        "[Client: mobile — keep the answer brief with short bullet points and avoid wide Markdown tables.]\n";
 
     /// <summary>
     /// Handles one user turn end to end: routes the question, applies session expiry and the
@@ -32,7 +34,7 @@ public sealed class ConversationEngine(
     /// <paramref name="userToken"/> is the signed-in user's delegated Graph token (Teams SSO), if any.
     /// </summary>
     public async Task<TurnResult> ReplyAsync(ConversationSession session, string question,
-        Action<string> onText, CancellationToken cancellationToken, string? userToken = null)
+        Action<string> onText, CancellationToken cancellationToken, string? userToken = null, bool isMobile = false)
     {
         ValidateQuestion(question);
 
@@ -44,7 +46,7 @@ public sealed class ConversationEngine(
         if (topic == "Start Over")
             session.Reset();
         session.LastSeenUtc = now;
-        await telemetry.RecordAsync("Telemetry - User Turn", new { topic, sensitive, expired }, cancellationToken);
+        await telemetry.RecordAsync("Telemetry - User Turn", new { topic, sensitive, expired, isMobile }, cancellationToken);
 
         if (sensitive)
             await SendSupportNoticeAsync(onText, cancellationToken);
@@ -52,7 +54,7 @@ public sealed class ConversationEngine(
         if (directText is not null)
             return await SendScriptedReplyAsync(topic, directText, sensitive, onText, cancellationToken);
 
-        return await GenerateAnswerAsync(session, question, topic, sensitive, onText, userToken, cancellationToken);
+        return await GenerateAnswerAsync(session, question, topic, sensitive, onText, userToken, isMobile, cancellationToken);
     }
 
     /// <summary>
@@ -95,12 +97,12 @@ public sealed class ConversationEngine(
     /// transient service errors) become a friendly message and a failed <see cref="TurnResult"/>.
     /// </summary>
     private async Task<TurnResult> GenerateAnswerAsync(ConversationSession session, string question,
-        string topic, bool sensitive, Action<string> onText, string? userToken, CancellationToken cancellationToken)
+        string topic, bool sensitive, Action<string> onText, string? userToken, bool isMobile, CancellationToken cancellationToken)
     {
         TurnResult answer;
         try
         {
-            answer = await RunAgentAsync(session, question, topic, sensitive, onText, userToken, cancellationToken);
+            answer = await RunAgentAsync(session, question, topic, sensitive, onText, userToken, isMobile, cancellationToken);
         }
         catch (ClientResultException exception) when (IsContentFilterRefusal(exception))
         {
@@ -183,15 +185,16 @@ public sealed class ConversationEngine(
     /// retrieved in this turn.
     /// </summary>
     private async Task<TurnResult> RunAgentAsync(ConversationSession session, string question, string topic,
-        bool sensitive, Action<string> onText, string? userToken, CancellationToken cancellationToken)
+        bool sensitive, Action<string> onText, string? userToken, bool isMobile, CancellationToken cancellationToken)
     {
         var agentSession = session.AgentSession is { } saved
             ? await _agent.DeserializeSessionAsync(JsonDocument.Parse(saved).RootElement, cancellationToken: cancellationToken)
             : await _agent.CreateSessionAsync(cancellationToken);
         var scope = new AnswerRun { User = userToken };
+        var prompt = isMobile ? MobileFormatHint + question : question;
         List<AgentResponseUpdate> updates = [];
         string? messageId = null;
-        await foreach (var update in _agent.RunStreamingAsync(question, agentSession, scope.ToRunOptions(), cancellationToken))
+        await foreach (var update in _agent.RunStreamingAsync(prompt, agentSession, scope.ToRunOptions(), cancellationToken))
         {
             updates.Add(update);
             if (string.IsNullOrEmpty(update.Text))
@@ -208,13 +211,17 @@ public sealed class ConversationEngine(
         if (string.IsNullOrWhiteSpace(response.Text))
             throw new InvalidDataException("The agent returned no answer text.");
         var citedIds = CitationIds(response.Text);
+        // When a follow-up answers from conversation history without searching again, resolve [n] against the last search.
+        var available = scope.Retrieved.Count > 0 ? scope.Retrieved : session.LastRetrieved;
 
-        if (citedIds.Any(id => !scope.Retrieved.ContainsKey(id)))
+        if (citedIds.Any(id => !available.ContainsKey(id)))
             throw new InvalidDataException("The answer referenced a document that was not retrieved.");
 
+        if (scope.Retrieved.Count > 0)
+            session.LastRetrieved = new Dictionary<int, KnowledgeDocument>(scope.Retrieved);
         session.AgentSession = (await _agent.SerializeSessionAsync(agentSession, cancellationToken: cancellationToken)).GetRawText();
         var sources = citedIds.Concat(scope.Chart?.Points.Select(point => point.Source.CitationId) ?? [])
-            .Distinct().Select(id => new AnswerSource(id, scope.Retrieved[id])).ToArray();
+            .Distinct().Select(id => new AnswerSource(id, available[id])).ToArray();
         var usage = response.Usage;
 
         return new TurnResult(topic, response.Text, sensitive, sources,

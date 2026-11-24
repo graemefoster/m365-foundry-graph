@@ -11,6 +11,8 @@ public sealed class GraphOptions
     public string OAuthConnectionName { get; }
     /// <summary>Whether the configured channel OAuth connection is active.</summary>
     public bool UseChannelOAuth => OAuthConnectionName.Length > 0;
+    /// <summary>Allows interactive browser sign-in for local Playground testing without a Bot Service OAuth connection.</summary>
+    public bool LocalInteractiveAuth { get; }
     /// <summary>Microsoft Entra tenant identifier.</summary>
     public string TenantId { get; }
     /// <summary>Application client identifier.</summary>
@@ -27,6 +29,7 @@ public sealed class GraphOptions
     {
         Enabled = configuration.GetValue("Graph:Enabled", false);
         OAuthConnectionName = configuration["Graph:OAuthConnectionName"] ?? "";
+        LocalInteractiveAuth = configuration.GetValue("Graph:LocalInteractiveAuth", false);
         TenantId = configuration["Graph:TenantId"] ?? "";
         ClientId = configuration["Graph:ClientId"] ?? "";
         ConnectionId = configuration["Graph:ConnectionId"] ?? "";
@@ -41,8 +44,8 @@ public sealed class GraphOptions
     private void ValidateEnabledSettings()
     {
         if (!HasValidApplicationIds() || !HasValidConnectionAndFields()
-            || !HasValidOAuthConnectionName() || !UseChannelOAuth)
-            throw new InvalidOperationException("Graph mode requires tenant/client GUIDs, an alphanumeric connection ID and fields, and a channel OAuth connection (Graph:OAuthConnectionName) for Teams SSO.");
+            || !HasValidOAuthConnectionName() || (!UseChannelOAuth && !LocalInteractiveAuth))
+            throw new InvalidOperationException("Graph mode requires tenant/client GUIDs, an alphanumeric connection ID and fields, and a channel OAuth connection (Graph:OAuthConnectionName) for Teams SSO (or Graph:LocalInteractiveAuth=true for local Playground testing).");
     }
 
     private bool HasValidApplicationIds() => Guid.TryParse(TenantId, out _) && Guid.TryParse(ClientId, out _);

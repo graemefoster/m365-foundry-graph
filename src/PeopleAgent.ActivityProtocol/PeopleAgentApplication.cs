@@ -1,6 +1,7 @@
 using System.ClientModel;
 using System.Diagnostics;
 using System.Text.Json;
+using Azure.Core;
 using Azure.Identity;
 using Microsoft.Agents.Builder;
 using Microsoft.Agents.Builder.App;
@@ -29,6 +30,7 @@ public sealed class PeopleAgentApplication : AgentApplication
     private readonly GraphOptions _graph;
     private readonly TopicPolicy _policy;
     private readonly TimeProvider _clock;
+    private InteractiveBrowserCredential? _localCredential;
 
     public PeopleAgentApplication(AgentApplicationOptions options, ConversationEngine engine,
         FeedbackService feedback, Telemetry telemetry, ILogger<PeopleAgentApplication> logger,
@@ -167,13 +169,12 @@ public sealed class PeopleAgentApplication : AgentApplication
         string text, string userKey, Stopwatch stopwatch, CancellationToken cancellationToken)
     {
         var stream = context.StreamingResponse;
-        var user = UsesChannelOAuth
-            ? await UserAuthorization.GetTurnTokenAsync(context, GraphHandler, cancellationToken)
-            : null;
+        var user = await AcquireUserTokenAsync(context, cancellationToken);
+        var isMobile = IsMobileClient(context.Activity);
         var streamEnded = false;
         try
         {
-            var result = await _engine.ReplyAsync(session, text, stream.QueueTextChunk, cancellationToken, user);
+            var result = await _engine.ReplyAsync(session, text, stream.QueueTextChunk, cancellationToken, user, isMobile);
 
             // Graph rejected the SSO token: clear it so the next turn prompts a fresh sign-in.
             if (result.Error == "graph_auth_required" && _graph.UseChannelOAuth)
@@ -197,6 +198,42 @@ public sealed class PeopleAgentApplication : AgentApplication
         {
             await HandleTurnFailureAsync(context, exception, streamEnded, stopwatch, cancellationToken);
         }
+    }
+
+    /// <summary>
+    /// Gets the signed-in user's delegated Graph token: from Bot Service channel OAuth in Teams/M365,
+    /// or via InteractiveBrowserCredential when Graph:LocalInteractiveAuth=true in local Playground testing.
+    /// </summary>
+    private async Task<string?> AcquireUserTokenAsync(ITurnContext context, CancellationToken cancellationToken)
+    {
+        if (UsesChannelOAuth)
+            return await UserAuthorization.GetTurnTokenAsync(context, GraphHandler, cancellationToken);
+        if (!_graph.Enabled || !_graph.LocalInteractiveAuth)
+            return null;
+        _localCredential ??= new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
+        {
+            TenantId = _graph.TenantId,
+            ClientId = _graph.ClientId,
+            RedirectUri = new Uri("http://localhost")
+        });
+        var token = await _localCredential.GetTokenAsync(new TokenRequestContext([GraphOptions.Scope]), cancellationToken);
+        return token.Token;
+    }
+
+    /// <summary>
+    /// Detects mobile Teams/M365 clients from the Activity protocol's optional <c>clientInfo</c> entity
+    /// (<c>platform</c>: <c>iOS</c>, <c>Android</c>, or <c>mobile</c>). Defaults to desktop when omitted.
+    /// </summary>
+    public static bool IsMobileClient(IActivity activity)
+    {
+        var clientInfo = activity.Entities?.FirstOrDefault(
+            entity => string.Equals(entity.Type, "clientInfo", StringComparison.OrdinalIgnoreCase));
+        if (clientInfo?.Properties is null || !clientInfo.Properties.TryGetValue("platform", out var raw))
+            return false;
+        var platform = raw.ValueKind == JsonValueKind.String ? raw.GetString() : raw.ToString();
+        return string.Equals(platform, "iOS", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(platform, "Android", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(platform, "mobile", StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>A visible "Source: ..." line under the answer, linked when the document has a URL.</summary>

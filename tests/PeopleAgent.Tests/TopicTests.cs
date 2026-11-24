@@ -199,6 +199,40 @@ public sealed class TopicTests : IDisposable
             Directory.Delete(_directory, recursive: true);
     }
 
+    [TestMethod]
+    public async Task ReplyAsync_FollowUpCitingPriorSearchWithoutReSearching_ResolvesCitation()
+    {
+        var model = FakeModel.Script(
+            FakeModel.Tool("knowledge_search", """{"query":"annual leave"}"""),
+            FakeModel.Text("Full-time employees get 20 days [1]."),
+            FakeModel.Text("Part-time leave is pro rata [1]."));
+        var engine = new ConversationEngine(_policy, new ConversationAgent(PeopleAgentFactory.Create(model,
+            new PeopleAgentFactory.Options("Answer from policy.", _search, AllowCharts: true))), _telemetry, _clock);
+        var session = new ConversationSession();
+
+        var first = await engine.ReplyAsync(session, "How many days of annual leave?", _ => { }, TestContext.CancellationToken);
+        var second = await engine.ReplyAsync(session, "What about part-time?", _ => { }, TestContext.CancellationToken);
+
+        Assert.IsNull(first.Error);
+        Assert.IsNull(second.Error);
+        Assert.HasCount(1, second.Sources);
+        Assert.AreEqual("Leave policy", second.Sources[0].Document.Title);
+    }
+
+    [TestMethod]
+    public async Task ReplyAsync_MobileClient_IncludesCompactFormattingHint()
+    {
+        var session = new ConversationSession();
+        var engine = Engine();
+
+        await engine.ReplyAsync(session, "annual leave", _ => { }, TestContext.CancellationToken, isMobile: true);
+        Assert.IsTrue(AnyMessageContains(_model.Requests[0].Messages, "[Client: mobile"));
+
+        session.Reset();
+        await engine.ReplyAsync(session, "annual leave", _ => { }, TestContext.CancellationToken, isMobile: false);
+        Assert.IsFalse(AnyMessageContains(_model.Requests[^1].Messages, "[Client: mobile"));
+    }
+
     private sealed class ManualClock : TimeProvider
     {
         public override DateTimeOffset GetUtcNow() => new(2026, 11, 17, 3, 0, 0, TimeSpan.Zero);

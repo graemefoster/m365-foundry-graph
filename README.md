@@ -29,7 +29,33 @@ dotnet format PeopleAgent.slnx --verify-no-changes
 az bicep build --file infra/m365.bicep --stdout > /dev/null
 ```
 
-The agent host is designed to run inside Microsoft Foundry (where Foundry provides the hosting environment, `/readiness` probe, and `FOUNDRY_PROJECT_ENDPOINT`).
+## Run locally (M365 Agents Playground)
+
+You can run the agent locally against your Foundry project (`az login` provides `DefaultAzureCredential`) using the bundled sample HR documents (`Graph__Enabled=false`) and chat with it in [Microsoft 365 Agents Playground](https://learn.microsoft.com/microsoft-365/agents-sdk/test-with-toolkit-project):
+
+```bash
+# Terminal 1: start the agent host on http://localhost:8088
+FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>" \
+AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-5.4-mini" \
+Graph__Enabled=false \
+dotnet run --project src/PeopleAgent/PeopleAgent.csproj
+
+# Terminal 2: launch M365 Agents Playground against /activity/messages
+agentsplayground -e http://localhost:8088/activity/messages -c emulator
+```
+
+You can also probe the health and Responses endpoints directly:
+
+```bash
+curl http://localhost:8088/readiness
+curl -X POST http://localhost:8088/responses \
+  -H "Content-Type: application/json" \
+  -d '{"input": "How many days of annual leave do employees get?"}'
+```
+
+> **Note:** Local `emulator` mode runs with anonymous channel auth. To also test live delegated **Microsoft Graph Search** in Playground (without a Bot Service OAuth card), set `Graph__Enabled=true`, `Graph__LocalInteractiveAuth=true`, `Graph__TenantId`, `Graph__ClientId` (your SSO app with `http://localhost` public-client redirect URI), and `Graph__ConnectionId` (leave `Graph__OAuthConnectionName` unset). The host opens a browser sign-in once via `InteractiveBrowserCredential` to acquire a delegated `ExternalItem.Read.All` token.
+>
+> **Mobile vs. desktop formatting:** The Activity adapter reads the optional `clientInfo` entity (`platform`: `iOS`, `Android`, `mobile`) and instructs the model to keep mobile replies brief with short bullet points and no wide Markdown tables.
 
 ## Configuration
 

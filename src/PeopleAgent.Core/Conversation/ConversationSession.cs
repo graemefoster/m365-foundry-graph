@@ -9,12 +9,15 @@ public sealed class ConversationSession
     public string? AgentSession { get; set; }
     /// <summary>Feedback cards that are still eligible for submission.</summary>
     public Dictionary<string, FeedbackAnswer> Answers { get; set; } = [];
+    /// <summary>Documents from the most recent knowledge search, used to resolve follow-up citations when the model answers from history.</summary>
+    public Dictionary<int, KnowledgeDocument> LastRetrieved { get; set; } = [];
 
     /// <summary>Clears conversation history, feedback state, and activity time.</summary>
     public void Reset()
     {
         AgentSession = null;
         Answers.Clear();
+        LastRetrieved.Clear();
         LastSeenUtc = null;
     }
 }
