@@ -170,7 +170,8 @@ public sealed class PeopleAgentApplication : AgentApplication
     {
         var stream = context.StreamingResponse;
         var user = await AcquireUserTokenAsync(context, cancellationToken);
-        var isMobile = IsMobileClient(context.Activity);
+        var platform = ClientPlatform(context.Activity);
+        var isMobile = IsMobilePlatform(platform);
         var streamEnded = false;
         try
         {
@@ -182,6 +183,8 @@ public sealed class PeopleAgentApplication : AgentApplication
 
             if (result.Sources.Count > 0)
                 stream.QueueTextChunk("\n\n" + string.Join("\n", result.Sources.Select(SourceLine)));
+            if (result.Usage is not null)
+                stream.QueueTextChunk("\n\n" + FormFactorTag(platform));
             stream.FinalMessage = FinalMessageWithCitations(stream.Message, result);
 
             streamEnded = true;
@@ -220,20 +223,32 @@ public sealed class PeopleAgentApplication : AgentApplication
         return token.Token;
     }
 
-    /// <summary>
-    /// Detects mobile Teams/M365 clients from the Activity protocol's optional <c>clientInfo</c> entity
-    /// (<c>platform</c>: <c>iOS</c>, <c>Android</c>, or <c>mobile</c>). Defaults to desktop when omitted.
-    /// </summary>
-    public static bool IsMobileClient(IActivity activity)
+    /// <summary>Reads the optional <c>clientInfo.platform</c> value from the incoming Activity.</summary>
+    public static string? ClientPlatform(IActivity activity)
     {
         var clientInfo = activity.Entities?.FirstOrDefault(
             entity => string.Equals(entity.Type, "clientInfo", StringComparison.OrdinalIgnoreCase));
         if (clientInfo?.Properties is null || !clientInfo.Properties.TryGetValue("platform", out var raw))
-            return false;
-        var platform = raw.ValueKind == JsonValueKind.String ? raw.GetString() : raw.ToString();
-        return string.Equals(platform, "iOS", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(platform, "Android", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(platform, "mobile", StringComparison.OrdinalIgnoreCase);
+            return null;
+        return raw.ValueKind == JsonValueKind.String ? raw.GetString() : raw.ToString();
+    }
+
+    /// <summary>
+    /// Detects mobile Teams/M365 clients from the Activity protocol's optional <c>clientInfo</c> entity
+    /// (<c>platform</c>: <c>iOS</c>, <c>Android</c>, or <c>mobile</c>). Defaults to desktop when omitted.
+    /// </summary>
+    public static bool IsMobileClient(IActivity activity) => IsMobilePlatform(ClientPlatform(activity));
+
+    private static bool IsMobilePlatform(string? platform) =>
+        string.Equals(platform, "iOS", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(platform, "Android", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(platform, "mobile", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>Compact form-factor footer tag shown on model answers for demo visibility.</summary>
+    public static string FormFactorTag(string? platform)
+    {
+        var label = IsMobilePlatform(platform) ? "📱 Mobile" : "🖥️ Desktop";
+        return string.IsNullOrWhiteSpace(platform) ? $"*{label}*" : $"*{label} ({platform})*";
     }
 
     /// <summary>A visible "Source: ..." line under the answer, linked when the document has a URL.</summary>

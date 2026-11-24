@@ -53,5 +53,9 @@ public sealed class ChannelGraphTests
         Assert.IsFalse(PeopleAgentApplication.IsMobileClient(WithPlatform("Windows")));
         Assert.IsFalse(PeopleAgentApplication.IsMobileClient(WithPlatform("Web")));
         Assert.IsFalse(PeopleAgentApplication.IsMobileClient(WithPlatform(null)));
+
+        Assert.AreEqual("*📱 Mobile (iOS)*", PeopleAgentApplication.FormFactorTag("iOS"));
+        Assert.AreEqual("*🖥️ Desktop (Windows)*", PeopleAgentApplication.FormFactorTag("Windows"));
+        Assert.AreEqual("*🖥️ Desktop*", PeopleAgentApplication.FormFactorTag(null));
     }
 }
