@@ -1,0 +1,25 @@
+{
+  "sourceId": "caldova-synthetic-service-notes",
+  "synthetic": true,
+  "seed": 20261109,
+  "generator": "generate.py",
+  "scenario": "scenario/articles.toml",
+  "generatedManifest": "generated/manifest.json",
+  "sources": [
+    {
+      "path": "generated/SemanticApplianceParts.csv",
+      "format": "csv",
+      "schema": ["PartNumber", "Name", "Description", "Price", "Inventory", "Appliances"]
+    },
+    {
+      "path": "generated/parts/{PartNumber}.txt",
+      "format": "text",
+      "joinKey": "PartNumber"
+    },
+    {
+      "path": "generated/retrieval-cases.json",
+      "format": "json",
+      "expectedSourceKey": "expectedIds"
+    }
+  ]
+}

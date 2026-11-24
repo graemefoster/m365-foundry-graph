@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="src/PeopleAgent.Core/PeopleAgent.Core.csproj" />
+  <Project Path="src/PeopleAgent.ActivityProtocol/PeopleAgent.ActivityProtocol.csproj" />
+  <Project Path="src/PeopleAgent/PeopleAgent.csproj" />
+  <Project Path="tests/PeopleAgent.Tests/PeopleAgent.Tests.csproj" />
+  <Project Path="src/CustomGraphConnector/CustomGraphConnector.csproj" />
+  <Project Path="src/CustomGraphConnector/tests/CustomGraphConnector.Tests/CustomGraphConnector.Tests.csproj" />
+</Solution>

@@ -1,0 +1,133 @@
+common_context = """
+This material belongs to a fictional support simulation. Its purpose is to help a training assistant distinguish one customer situation from another and retrieve the appropriate explanatory passage. Staff record observations and route a case; they do not diagnose faults, open equipment, or instruct customers to perform repairs. Any real equipment concern belongs with an appropriately qualified service provider.
+
+The accompanying price, stock quantity, model name, and reference number are invented demonstration values. They describe a synthetic catalogue entry, not a quotation or actual availability. All examples are deliberately isolated from real customer records. A successful demonstration cites the specific article that explains the situation instead of inventing a remedy or confusing a commercial policy with technical guidance.
+"""
+
+[[articles]]
+id = 2001
+slug = "residual-liquid"
+title = "Residual liquid and incomplete discharge case routing"
+model = "Caldova QuietCycle Q8"
+query = "Why is crockery still sitting in a puddle once cleaning has ended?"
+body = """
+In the Caldova training scenario, a QuietCycle customer describes pooled liquid remaining in the basin after the programme has completed. The important distinction is between the cleaning phase and the subsequent discharge phase. An appliance can finish its scheduled sequence without successfully moving the remaining liquid out of the chamber. The simulation associates that description with the drainage support category, rather than with appearance, cosmetic damage, or spare-part delivery.
+
+The training desk uses an observation record to distinguish residual liquid from a separate report about moisture on the exterior. The record includes whether the programme reached its ordinary end indication, whether the basin remained visibly filled, and whether the report concerns one occurrence or several completed programmes. Those observations identify the relevant article; they are not sufficient evidence to identify a failed component. The reference catalogue includes a discharge assembly, but its presence does not prove that it requires replacement.
+
+A representative fictional case describes clean-looking dishes above a shallow pool at the bottom of the chamber. The support summary records that cleaning appeared to finish while discharge remained incomplete. The desired outcome is a drainage-assessment referral containing that distinction. The desk does not direct the customer to remove panels, touch wiring, disconnect hoses, bypass safeguards, or operate exposed equipment. It also does not infer a blockage merely because pooled liquid is present.
+
+This article is relevant when a question describes liquid that should have left the internal chamber but remains after the scheduled sequence. It is not the primary reference for droplets along a refrigerator doorway, an oscillating sound during normal operation, or a parcel delivered to the wrong address. Retrieval should preserve these boundaries so that similar words about appliances do not send unrelated cases into the same support queue.
+"""
+
+[[articles]]
+id = 2002
+slug = "thermal-performance"
+title = "Reduced cold-storage performance support classification"
+model = "Caldova FreshVault F6"
+query = "Our groceries no longer feel chilled even though the appliance seems to be operating."
+body = """
+The fictional FreshVault scenario concerns a cold-storage cabinet that appears to be operating while its compartment no longer maintains the expected cool condition. The defining observation is a change in thermal performance, not the appearance of the cabinet or the status of an order for a replacement handle. Training staff classify the report as a cooling-performance case and preserve the customer's description without asserting that a particular component has failed.
+
+The simulation separates a customer's perception from a confirmed measurement. A report that stored items feel warmer is recorded as an observation. An independently supplied temperature reading is stored as a separate field, together with its stated context. Staff do not invent a reading, a target range, or a duration. The reference entry for a circulation module provides a related catalogue concept, but neither that entry nor a running sound establishes the cause of reduced cooling.
+
+One illustrative case reports that the cabinet continues to make its familiar operating sound while the interior has become noticeably less cool. The training response explains that visible or audible operation is not the same as verified cooling performance. The desk prepares a referral for professional assessment and distinguishes this case from a report about condensation on the doorway perimeter. This narrative does not provide food-safety advice, repair instructions, or permission to keep using an appliance that needs assessment.
+
+The article should be selected for descriptions of declining chill, an unexpectedly warm storage compartment, or a difference between apparent operation and the condition inside the cabinet. Questions about cosmetic trim, return authorisation, or late component deliveries belong elsewhere. A grounded answer should cite the relevant classification passage and acknowledge that the simulation has not established a fault, rather than naming a compressor or recommending an unsupported replacement.
+"""
+
+[[articles]]
+id = 2003
+slug = "perimeter-moisture"
+title = "Doorway perimeter moisture observation records"
+model = "Caldova FreshVault F6"
+query = "There are beads of wetness around the outside edge where the cabinet closes."
+body = """
+This fictional reference addresses a report about moisture appearing near the perimeter of a cabinet doorway. The observation concerns the boundary where the closed door meets the cabinet, rather than liquid retained inside a washing chamber after discharge. Training staff preserve that location because a general statement that an appliance is wet can otherwise retrieve an unrelated drainage article. The support classification is doorway-perimeter moisture observation.
+
+The training form separates the affected location, the customer's description, and the frequency of the observation. It also distinguishes a continuous seal reference from decorative edging or a door handle. A catalogue relationship between the doorway boundary and a sealing element can help the assistant retrieve the right reference, but it must not be presented as proof that the element has failed. The simulation does not authorise adjustments, removal, or replacement.
+
+An example case describes small droplets along the exterior doorway boundary and specifically states that there is no report of pooled liquid inside a washing basin. The grounded summary keeps those two facts together. It notes that an observation at the boundary of a cold-storage compartment differs from an incomplete discharge sequence. The desk routes the case for professional assessment, without inventing environmental readings or claiming that a particular condition is the sole cause.
+
+This reference is appropriate when a customer describes moisture at the closing boundary, a damp doorway perimeter, or droplets associated with the cabinet opening. It is not intended for complaints about the cooling condition of stored goods, the timing of a replacement shipment, or repetitive sounds during operation. The desired retrieval result is a passage explaining the importance of location and the distinction between an external perimeter observation and liquid remaining within another appliance's internal chamber.
+"""
+
+[[articles]]
+id = 2004
+slug = "repetitive-sound"
+title = "Repetitive operating sound intake and escalation"
+model = "Caldova QuietCycle Q8"
+query = "The unit keeps making a rhythmic rattling noise and we want the right team to review it."
+body = """
+The Caldova simulation includes a support intake category for recurring sound during an appliance's ordinary operating sequence. The category is based on the pattern and timing described by the customer, rather than on a guessed mechanical cause. A repetitive or oscillating sound can be described in many everyday ways, so the assistant should identify the broader acoustic observation instead of requiring the article's precise wording in the question.
+
+Training staff record when the sound is reported, how the customer describes its repetition, and whether the report concerns a changed pattern compared with previous operation. They do not infer severity from a recording alone or promise that a sound is harmless. The case record deliberately keeps the observed pattern separate from any hypothesis about a moving assembly. The related reference catalogue is contextual information, not an instruction to remove or inspect equipment.
+
+A fictional support summary describes a repeated pulse during the middle of the programme, with a customer requesting review because the pattern differs from earlier use. The desired desk outcome is an acoustic-observation referral that includes that timing distinction. The simulation does not ask the customer to reach into equipment, disable safety mechanisms, handle internal parts, or run a disassembled appliance. It provides case-routing language only.
+
+This article should be retrieved for questions about repeated operating sounds, a newly noticed oscillating pattern, or uncertainty about which assessment queue handles an acoustic report. It should not be selected merely because another article mentions an appliance running. Reduced cold-storage performance, liquid remaining after discharge, and a delivery delay each have their own references. A grounded response explains the reporting category and the limits of the observations without manufacturing a diagnosis or prescribing a repair.
+"""
+
+[[articles]]
+id = 2005
+slug = "transport-damage"
+title = "Receipt inspection and transport-damage evidence"
+model = "Caldova Parts Delivery Training"
+query = "The replacement arrived with a crushed carton and a broken piece inside."
+body = """
+The fictional Caldova fulfilment scenario covers damage identified when a replacement component is received. The key distinction is between the condition of a shipment at receipt and the performance of an installed appliance. Training staff classify a damaged carton or visibly affected component as a receipt-evidence case. They do not treat the report as proof of a fault in equipment that the customer already owns.
+
+The evidence record separates packaging condition, component condition, shipment reference, and the time the observation was reported. A packaging defect does not automatically establish that the enclosed component is unusable, and an affected component does not establish which organisation caused the damage. The desk records the observations without assigning liability. Photographs, when supplied in the fictional case, are treated as case evidence rather than a substitute for an authorised review.
+
+One training example describes a visibly deformed outer carton and a fractured accessory inside the same parcel. The desk links both observations to the delivery reference and routes the case to fulfilment review. It does not instruct the customer to install a potentially affected component or make a repair attempt. The illustrative outcome is an evidence-based receipt review, not a guaranteed replacement, refund, legal entitlement, or commitment by a real manufacturer.
+
+The article is relevant when a question describes a component arriving damaged, an affected parcel, or a discrepancy between the delivered item's expected and observed condition. A shipment that has not arrived at all belongs to the delivery-tracking reference. An appliance that changes its operating behaviour belongs to the relevant service-intake category. Retrieval should distinguish transport evidence from technical assessment so the answer cites the right process and does not invent promises that the synthetic policy does not contain.
+"""
+
+[[articles]]
+id = 2006
+slug = "replacement-review"
+title = "Extended service interruption and replacement-review intake"
+model = "Caldova Service Continuity Training"
+query = "The repair has dragged on and the customer wants a swap rather than another appointment."
+body = """
+This fictional policy describes how the Caldova training desk records a request for replacement review after an extended service interruption. It is a case-intake workflow, not a warranty rule or statement of legal rights. The important concept is a customer's preference for an alternative outcome after repeated or prolonged service activity. Recording that preference does not mean the request has been approved.
+
+The simulated review packet contains the service reference, an account of appointments already recorded, the unresolved concern as described by the customer, and the outcome the customer is requesting. Staff distinguish a customer's statement from independently verified service history. They do not fabricate visit dates, promise a decision deadline, or imply that a replacement follows automatically from the number of appointments. The designated review team evaluates the packet within the fictional scenario.
+
+An illustrative case describes a customer who feels that continued appointments are not producing a usable outcome and asks for a different unit. The grounded desk summary identifies the request as replacement review and preserves the distinction between escalation and approval. It does not tell the customer that the original appliance is safe, unsafe, defective, or legally eligible for exchange. Those conclusions are outside the scope of this synthetic reference.
+
+This article is appropriate for questions about requesting a different service outcome, escalating a lengthy interruption, or collecting information for a proposed exchange. It is not the reference for an ordinary return of an unused spare component, damage discovered at delivery, or selection of a compatible catalogue entry. A useful retrieved passage describes what the review packet contains and why acknowledgement of a request must not be mistaken for a commercial or legal commitment.
+"""
+
+[[articles]]
+id = 2007
+slug = "reference-supersession"
+title = "Catalogue reference succession and compatibility review"
+model = "Caldova Catalogue Matching Training"
+query = "The old spare code is gone and the newer listing has a different identifier; will it fit?"
+body = """
+The fictional Caldova catalogue includes reference succession, where a newer catalogue entry is linked to an older identifier. The existence of that link means the entries are related within the training dataset. It does not, by itself, establish that every model associated with the earlier entry can use the newer one. The assistant should retrieve compatibility-review guidance rather than equate a changed identifier with universal interchangeability.
+
+The simulated matching record keeps three concepts separate: the original reference, the succeeding reference, and the appliance variant for which a match is being considered. Staff use the stated variant rather than an abbreviated family name when preparing a review. An absent entry in an older list is not evidence that a component has ceased to exist, and a replacement listing is not proof that it is suitable for every installation. The training desk records these distinctions before routing the question.
+
+An illustrative case presents an older catalogue identifier that no longer appears in a current list and a new identifier linked as its successor. The customer asks whether the newer entry is appropriate for their particular variant. The grounded answer explains the difference between reference succession and verified compatibility, then points to the matching review record. It does not instruct anyone to install a component or claim compatibility that the synthetic catalogue has not established.
+
+This reference belongs with questions about changed spare identifiers, successor entries, missing older references, or uncertainty about a match between a component and an appliance variant. A question about an affected parcel belongs to receipt review, while a question about a delayed replenishment belongs to supply timing. Semantic retrieval should recognise the relationship between older and newer references even when the user does not use the catalogue's formal term for succession.
+"""
+
+[[articles]]
+id = 2008
+slug = "replenishment-delay"
+title = "Unavailable stock and replenishment communication"
+model = "Caldova Parts Supply Training"
+query = "We cannot fulfil the order because the shelf is empty and the next batch is late."
+body = """
+The Caldova supply-training scenario concerns an order that cannot be fulfilled from currently available stock. The defining relationship is between an outstanding order, an unavailable catalogue item, and an expected replenishment that has not yet become available. This is a fulfilment-timing problem. It is not a report that a component was damaged during transport or that an appliance has changed its operating behaviour.
+
+The simulation separates on-hand quantity, reserved quantity, replenishment expectation, and confirmed receipt. Staff do not treat a forecast as proof that goods are already available. They also distinguish a supplier's stated expectation from a commitment made to a customer. The desk records the source and status of each expectation rather than inventing a delivery date or presenting an uncertain forecast as guaranteed availability.
+
+A representative fictional case describes an outstanding order whose requested component has no unallocated stock available. A planned replenishment remains outstanding, so the desk prepares a supply-timing update and identifies the appropriate fulfilment contact. The grounded summary explains why an order can remain unfulfilled even when the catalogue still contains the item. It does not claim that a shipment has been dispatched, promise expedited delivery, or assert a particular supplier failure.
+
+This article should be retrieved for questions about empty inventory, outstanding replenishment, an unfulfilled component order, or uncertainty about when supply will resume. It should not be selected for a compatibility question involving an older reference and its successor, nor for a request to replace an appliance after a lengthy service interruption. A useful answer cites the distinction between forecast replenishment and confirmed receipt and makes the uncertainty explicit instead of inventing an arrival commitment.
+"""

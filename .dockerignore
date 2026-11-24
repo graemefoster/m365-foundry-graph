@@ -1,0 +1,7 @@
+**/bin
+**/obj
+**/*.binlog
+**/appsettings.Local.json
+.local
+.git
+tests

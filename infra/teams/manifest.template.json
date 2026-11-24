@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.29/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.29",
+  "version": "${appVersion}",
+  "id": "${teamsAppId}",
+  "developer": {
+    "name": "${developerName}",
+    "websiteUrl": "${websiteUrl}",
+    "privacyUrl": "${privacyUrl}",
+    "termsOfUseUrl": "${termsUrl}"
+  },
+  "name": {"short": "${displayName}", "full": "${displayName}"},
+  "description": {"short": "${shortDescription}", "full": "${fullDescription}"},
+  "icons": {"color": "color.png", "outline": "outline.png"},
+  "accentColor": "#FFFFFF",
+  "bots": [{
+    "botId": "${agentClientId}",
+    "scopes": ["personal", "copilot"],
+    "supportsFiles": false,
+    "isNotificationOnly": false
+  }],
+  "copilotAgents": {
+    "customEngineAgents": [{"id": "${agentClientId}", "type": "bot"}]
+  },
+  "webApplicationInfo": {
+    "id": "${authAppId}",
+    "resource": "${ssoResource}"
+  },
+  "validDomains": ["token.botframework.com", "login.microsoftonline.com"]
+}

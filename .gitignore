@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/TestResults/
+.local/
+*.binlog
+appsettings.Local.json
+.azure
+__pycache__/
+.DS_Store
+.idea/
+appPackage.zip
+.appPackage.zip.azd-generated

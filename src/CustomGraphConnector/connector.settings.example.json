@@ -1,0 +1,10 @@
+{
+  "tenantId": "REPLACE_WITH_TENANT_GUID",
+  "clientId": "",
+  "certificatePath": ".secrets/connector.pem",
+  "privateKeyPath": ".secrets/connector.key",
+  "connectionId": "caldovaapplianceparts",
+  "connectionName": "Caldova Appliance Parts",
+  "csvPath": "data/ApplianceParts.csv",
+  "sourceUrl": "https://github.com/microsoftgraph/msgraph-connectors-sdk/blob/main/C%23%20samples/CsvConnector/CustomConnector/ApplianceParts.csv"
+}

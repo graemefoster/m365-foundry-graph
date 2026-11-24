@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <!-- Host: composes Core with the Activity Protocol adapter and Agent Framework Responses hosting; also hosts dev/eval tools. -->
+  <PropertyGroup>
+    <UserSecretsId>8084a5ab-ae6d-489c-89a2-1e2978d51814</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Update="appsettings.Local.json" CopyToPublishDirectory="Never" />
+    <PackageReference Include="Microsoft.Agents.AI.Foundry.Hosting" Version="1.28.0-preview.261106.1" />
+    <ProjectReference Include="../PeopleAgent.Core/PeopleAgent.Core.csproj" />
+    <ProjectReference Include="../PeopleAgent.ActivityProtocol/PeopleAgent.ActivityProtocol.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="PeopleAgent.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Data/**/*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Data/**/*.txt;Data/**/*.jsonl" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MSTest" Version="4.5.3" />
+    <ProjectReference Include="../../src/PeopleAgent/PeopleAgent.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="PeopleAgent.Core" />
+    <Using Include="PeopleAgent.ActivityProtocol" />
+  </ItemGroup>
+</Project>

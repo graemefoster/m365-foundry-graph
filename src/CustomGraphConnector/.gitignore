@@ -1,0 +1,8 @@
+bin/
+obj/
+.secrets/
+.local/
+connector.settings.json
+connector.semantic.settings.json
+data/semantic-demo/generated/
+*.binlog

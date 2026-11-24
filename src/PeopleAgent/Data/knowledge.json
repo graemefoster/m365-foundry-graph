@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Annual leave",
+    "keywords": ["annual", "leave", "holiday", "vacation", "packaged", "entitlement"],
+    "content": "SYNTHETIC DEMO POLICY, NOT CALDOVA POLICY. In this fictional organisation, full-time packaged employees in Australia receive 20 working days of annual leave per year. Part-time entitlement is pro rata. Different employment types or countries require clarification rather than assuming this entitlement applies. To request leave, the employee checks their balance in their HR portal, discusses dates with their manager, and submits the request in that portal. The manager approves or declines the request. This document contains no personal leave balances. The demo agent cannot submit or approve requests."
+  },
+  {
+    "id": 2,
+    "title": "Personal and carer's leave",
+    "keywords": ["personal", "sick", "ill", "carer", "medical", "certificate", "leave"],
+    "content": "SYNTHETIC DEMO POLICY, NOT CALDOVA POLICY. Full-time employees in Australia in this fictional organisation receive 10 working days of paid personal/carer's leave per year, pro rata for part-time employees. Notify your manager as soon as reasonably practical if you cannot work. Record the absence in the HR portal. Evidence may be requested under the fictional policy; contact your HR team for the requirements applying to a particular absence. Do not send medical records to this demo. The agent cannot determine an individual's eligibility or diagnose illness."
+  },
+  {
+    "id": 3,
+    "title": "Benefits and development",
+    "keywords": ["benefit", "benefits", "training", "development", "learning", "course"],
+    "content": "SYNTHETIC DEMO POLICY, NOT CALDOVA POLICY. The fictional organisation offers an Employee Assistance Program, a learning catalogue and flexible-work request processes. Training options depend on role and country. Discuss a course with your manager and check the internal learning catalogue for eligibility and approval. No reimbursement amount, paid parental leave entitlement or individual eligibility is specified in this sample. The demo cannot enrol employees or approve spending."
+  },
+  {
+    "id": 4,
+    "title": "Respectful workplace and support",
+    "keywords": ["harassment", "bullying", "discrimination", "sensitive", "support", "hardship", "domestic", "violence", "abuse", "stress", "overwhelmed", "burnout", "suicide", "harm", "eap", "complaint"],
+    "content": "SYNTHETIC DEMO POLICY, NOT CALDOVA POLICY. Employees who experience bullying, harassment, discrimination or distress can seek support through their real organisation's HR team, Employee Assistance Program or a trusted person. If there is immediate danger, contact local emergency services. Do not use this demo to report incidents or share private details. It cannot contact anyone, open a case, provide crisis counselling or promise confidentiality. Decisions on disciplinary or complex personal matters require an appropriate human professional."
+  },
+  {
+    "id": 5,
+    "title": "Flexible work",
+    "keywords": ["flexible", "remote", "home", "hybrid", "hours", "workplace"],
+    "content": "SYNTHETIC DEMO POLICY, NOT CALDOVA POLICY. Employees may discuss flexible working arrangements with their manager. A request should describe the arrangement, proposed schedule and how work responsibilities will be met. Submit through the real organisation's applicable process; approval is not automatic. This sample sets no fixed number of work-from-home days. The agent cannot approve an arrangement."
+  },
+  {
+    "id": 6,
+    "title": "Privacy and HR enquiries",
+    "keywords": ["privacy", "private", "employee", "record", "salary", "payroll", "balance", "contact", "hr", "case"],
+    "content": "SYNTHETIC DEMO POLICY, NOT CALDOVA POLICY. Access your own employment information through your organisation's authorised HR portal. Do not request colleagues' private records. Ask your real HR team for definitive advice when the sample documents are incomplete, unclear or inconsistent. The demo has no employee directory, salary data, records, ServiceNow connection, HCM integration or mechanism to contact or hand off to HR."
+  }
+]

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Activity Protocol adapter (Teams / M365 Copilot via Bot Service and Foundry native Activity hosting). -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Azure.AI.AgentServer.Activity" Version="1.0.0-beta.1" />
+    <ProjectReference Include="../PeopleAgent.Core/PeopleAgent.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Microsoft.AspNetCore.Http" />
+    <Using Include="Microsoft.Extensions.Configuration" />
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Microsoft.Extensions.Logging" />
+    <Using Include="PeopleAgent.Core" />
+  </ItemGroup>
+</Project>
